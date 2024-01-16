@@ -1,3 +1,3 @@
 Audio to Text API
 =================
-API for converting your audios to text.
+API for converting audios to text.
