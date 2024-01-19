@@ -1,31 +1,36 @@
-from fastapi import FastAPI
-from fastapi import HTTPException
+import pathlib 
+import tempfile
+
+from fastapi import FastAPI, UploadFile
 from .tasks import celery, long_running_task
 
 app = FastAPI()
 
 
-@app.get('/')
-def root():
-    return {'message': 'Hello, World!'}
+@app.post('/transcribe')
+async def transcribe(audio: UploadFile):
+    ext = pathlib.Path(audio.filename).suffix
+    with tempfile.NamedTemporaryFile(suffix=ext) as tmp_file:
+        tmp_file.write(audio.file.read())
+        # Do something with the tmp_file
+
+    return {'task_id': '12345'}
 
 
-@app.post('/tasks')
-async def create_task(number: int):
-    task = long_running_task.delay(number)
-    return {
-        'task_id': task.id,
-        'status': f'http localhost:3000/tasks/{task.id}'
-    }
+@app.get('/ping')
+def ping():
+    return {'message': 'API is up and running.'}
 
 
-@app.get('/tasks/{task_id}')
-async def get_task_result(task_id: str):
-    task = celery.AsyncResult(task_id)
-    if task.ready():
-        return {'result': task.get()}
-    elif task.state == 'PENDING':
-        print(task.state)
-        raise HTTPException(status_code=404, detail='Task not found')
-    else:
-        return {'status': 'in_progress'}
+# @app.post('/tasks')
+# async def create_task(number: float):
+#     task = long_running_task.delay(number)
+#     return {'task_id': task.id}
+#
+# @app.get('/tasks/{task_id}')
+# async def get_task_result(task_id: str):
+#     task = celery.AsyncResult(task_id)
+#     if task.ready():
+#         return {'status': 'DONE', 'result': task.get()}
+#     else:
+#         return {'status': 'IN_PROGRESS'}
