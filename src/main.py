@@ -1,25 +1,30 @@
 import pathlib 
 import tempfile
-
 from fastapi import FastAPI, UploadFile
-from .tasks import celery, long_running_task
+
+from .tasks import (
+    celery, 
+    transcribe_from_file
+)
+
 
 app = FastAPI()
-
-
-@app.post('/transcribe')
-async def transcribe(audio: UploadFile):
-    ext = pathlib.Path(audio.filename).suffix
-    with tempfile.NamedTemporaryFile(suffix=ext) as tmp_file:
-        tmp_file.write(audio.file.read())
-        # Do something with the tmp_file
-
-    return {'task_id': '12345'}
 
 
 @app.get('/ping')
 def ping():
     return {'message': 'API is up and running.'}
+
+
+@app.post('/transcribe')
+async def transcribe(audio: UploadFile):
+    ext = pathlib.Path(audio.filename).suffix
+    fd, filepath = tempfile.mkstemp(dir='/tmp', suffix=ext)
+    with open(fd, 'wb') as f:
+        f.write(audio.file.read())
+
+    task = transcribe_from_file.delay(filepath)
+    return {'taskId': task.id}
 
 
 # @app.post('/tasks')

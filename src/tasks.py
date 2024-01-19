@@ -15,6 +15,9 @@ celery = Celery(
 )
 
 @celery.task
-def long_running_task(number: int):
-    time.sleep(10) 
-    return math.sqrt(number)
+def square_root(number: float):
+    return round(math.sqrt(number), 4)
+
+
+def transcribe_from_file(filepath: str):
+    pass
