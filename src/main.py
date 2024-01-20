@@ -6,7 +6,7 @@ from fastapi import FastAPI, UploadFile
 
 from .tasks import (
     celery, 
-    transcribe_from_file
+    task_transcribe_from_file
 )
 
 
@@ -18,19 +18,19 @@ def ping():
     return {'message': 'API is up and running.'}
 
 
-@app.post('/transcribe')
-async def transcribe(audio: UploadFile):
+@app.post('/transcribe_from_file')
+async def transcribe_from_file(audio: UploadFile):
     ext = pathlib.Path(audio.filename).suffix
     _, filepath = tempfile.mkstemp(dir='/tmp', suffix=ext)
     with open(filepath, 'wb') as f:
         f.write(audio.file.read())
 
-    task = transcribe_from_file.delay(filepath)
+    task = task_transcribe_from_file.delay(filepath)
     return {'taskId': task.id}
 
 
-@app.get('/transcribe/{task_id}')
-async def get_task_result(task_id: str):
+@app.get('/status/{task_id}')
+async def status(task_id: str):
     task = celery.AsyncResult(task_id)
     if task.ready():
         return {'status': 'DONE', 'result': task.get()}

@@ -19,7 +19,7 @@ celery = Celery(
 
 
 @celery.task
-def transcribe_from_file(filepath: str):
+def task_transcribe_from_file(filepath: str):
     model = whisper.load_model('base')
     result = model.transcribe(filepath)
     os.remove(filepath)
@@ -27,5 +27,5 @@ def transcribe_from_file(filepath: str):
 
 
 @celery.task
-def square_root(number: float):
+def task_square_root(number: float):
     return round(math.sqrt(number), 4)
