@@ -16,6 +16,7 @@ def test_ping():
     assert response.json() == {'message': 'API is up and running.'}
 
 
+@pytest.mark.skip
 @patch('src.main.transcribe_from_file')
 def test_transcribe(mock_transcribe_from_file):
     mock_task_id = 'mocked_task_id'

@@ -12,21 +12,26 @@ logging.basicConfig(
 )
 
 
-filepath = 'samples/echo.wav'
-logging.info(f'Audio file = {filepath}')
+sample_audio_file = 'samples/fable.wav'
+sample_audio_url = 'https://cdn.openai.com/API/docs/audio/echo.wav'
 
-with open(filepath, 'rb') as f:
-    r = requests.post('http://localhost:3000/transcribe_from_file', files={'audio': f})
-    if r.status_code != 200:
-        logging.error(f'Status code = {r.status_code}')
-        sys.exit(1)
+# with open(sample_audio_file, 'rb') as f:
+#     r = requests.post('http://localhost:3000/transcribe', files={'audio': f})
+#     if r.status_code != 200:
+#         logging.error(f'Status code = {r.status_code}, Body = {r.json()}')
+#         sys.exit(1)
+
+r = requests.post('http://localhost:3000/transcribe', data={'url': sample_audio_url})
+if r.status_code != 200:
+    logging.error(f'Status code = {r.status_code}, Body = {r.json()}')
+    sys.exit(1)
 
 task_id = r.json()['taskId']
 logging.info(f'Task ID = {task_id}')
 
 while True:
     time.sleep(1)
-    r = requests.get(f'http://localhost:3000/status/{task_id}')
+    r = requests.get(f'http://localhost:3000/transcribe/{task_id}')
     status = r.json()['status']
     if status == 'DONE':
         logging.info(f'Result = {r.json()["result"]}')
