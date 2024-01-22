@@ -13,8 +13,8 @@ from .tasks import (
 
 
 app = FastAPI(
-    title='Audio to Text API',
-    summary='API for transcribing audio files to text'
+    title='Audio Transcriber API',
+    summary='Transcribe audio from URL or upload from local disk.'
 )
 
 
