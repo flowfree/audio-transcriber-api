@@ -56,7 +56,7 @@ async def transcribe(audio: UploadFile = None, url: str = Form(None)):
 
 
 @app.get('/transcribe/{task_id}')
-async def transcribe(task_id: str):
+async def transcribe_status(task_id: str):
     task = celery.AsyncResult(task_id)
     if task.ready():
         return {'status': 'DONE', 'result': task.get()}
