@@ -1,0 +1,30 @@
+version: "3"
+
+services:
+  app:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    volumes:
+      - ./src:/app/src
+      - /tmp:/tmp
+    depends_on:
+      - celery
+      - redis
+    command: uvicorn src.main:app --port 8000
+
+  celery:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./src:/app/src
+      - /tmp:/tmp
+    depends_on:
+      - redis
+    command: celery -A src.tasks worker --loglevel=info
+
+  redis:
+    image: redis
