@@ -16,9 +16,8 @@ def test_ping():
     assert response.json() == {'message': 'API is up and running.'}
 
 
-@pytest.mark.skip
 @patch('src.main.transcribe_from_file')
-def test_transcribe(mock_transcribe_from_file):
+def test_transcribe_by_upload(mock_transcribe_from_file):
     mock_task_id = 'mocked_task_id'
     mock_transcribe_from_file.delay.return_value = MagicMock(id=mock_task_id)
 
@@ -31,3 +30,15 @@ def test_transcribe(mock_transcribe_from_file):
     assert response.status_code == 200
     assert response.json() == {'taskId': mock_task_id}
     assert mock_transcribe_from_file.delay.call_count == 1
+
+
+@patch('src.main.transcribe_from_url')
+def test_transcribe_by_url(mock_transcribe_from_url):
+    mock_task_id = 'mocked_task_id'
+    mock_transcribe_from_url.delay.return_value = MagicMock(id=mock_task_id)
+
+    response = client.post('/transcribe', data={'url': 'http://example.com/test.wav'})
+
+    assert response.status_code == 200
+    assert response.json() == {'taskId': mock_task_id}
+    assert mock_transcribe_from_url.delay.call_count == 1
