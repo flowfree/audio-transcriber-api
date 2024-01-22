@@ -1,3 +1,3 @@
-Audio to Text API
-=================
-API for converting audios to text.
+Audio Transcriber API
+=====================
+Transcribe audio from URL or upload from local disk.
