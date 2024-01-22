@@ -1,15 +1,20 @@
 import tempfile
 import os
 
+from dotenv import load_dotenv
 from celery import Celery
 import requests
 import whisper
 
 
+load_dotenv()
+REDIS_HOST = os.environ['REDIS_HOST']
+REDIS_PORT = os.environ['REDIS_PORT']
+
 celery = Celery(
     'tasks', 
-    broker='redis://localhost:6379/0',
-    backend='redis://localhost:6379/0'
+    broker=f'redis://{REDIS_HOST}:{REDIS_PORT}/0',
+    backend=f'redis://{REDIS_HOST}:{REDIS_PORT}/0'
 )
 
 
