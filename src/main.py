@@ -12,7 +12,10 @@ from .tasks import (
 )
 
 
-app = FastAPI()
+app = FastAPI(
+    title='Audio to Text API',
+    summary='API for transcribing audio files to text'
+)
 
 
 @app.post('/transcribe')
