@@ -8,10 +8,10 @@ WORKDIR /app
 COPY requirements.txt .
 
 # Install the dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+RUN apt update && \
+    apt install -y ffmpeg &&  \
+    pip install --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
 
 # Copy the FastAPI code to the container
-COPY src/ .
-
-# Expose the port on which the FastAPI application will run
-EXPOSE 8000
+COPY . .

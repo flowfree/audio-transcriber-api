@@ -13,7 +13,7 @@ services:
     depends_on:
       - celery
       - redis
-    command: uvicorn src.main:app --port 8000
+    command: uvicorn src.main:app --host 0.0.0.0 --port 8000
 
   celery:
     build:
@@ -21,6 +21,7 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./src:/app/src
+      - ${HOME}/.cache/whisper:/root/.cache/whisper
       - /tmp:/tmp
     depends_on:
       - redis
