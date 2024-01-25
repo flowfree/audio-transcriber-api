@@ -15,7 +15,7 @@ Make sure you have Python and Redis installed on your system. After cloning this
 
         pip install -r requirements.txt 
 
-1.  Copy the `env_sample` file into `.env` and modify its values:
+1.  Copy the `.env_sample` file into `.env` and modify its values:
 
         REDIS_HOST=localhost
         REDIS_PORT=6379
@@ -64,7 +64,7 @@ print('Result = ', r.json()['result'])
 ## Run with Docker
 If you have Docker installed on your machine, you can run the API using Docker:
 
-1.  Copy the `env_sample` file into `.env` and modify its values:
+1.  Copy the `.env_sample` file into `.env` and modify its values:
 
         REDIS_HOST=redis
         REDIS_PORT=6379
