@@ -19,6 +19,8 @@ Make sure you have Python and Redis installed on your system. After cloning this
 
         uvicorn src.main:app --reload
 
+    It will run on `localhost` and accepting requests on port 8000.
+
 1.  Open another terminal and activate the virtual env as well:
 
         . venv/bin/activate
