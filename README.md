@@ -15,6 +15,11 @@ Make sure you have Python and Redis installed on your system. After cloning this
 
         pip install -r requirements.txt 
 
+1.  Copy the `env_sample` file into `.env` and modify its values:
+
+        REDIS_HOST=localhost
+        REDIS_PORT=6379
+
 1.  Run the development server:
 
         uvicorn src.main:app --reload
@@ -57,11 +62,18 @@ print('Result = ', r.json()['result'])
 
 
 ## Run with Docker
-If you have Docker installed on your machine, you can run the API using a single command:
+If you have Docker installed on your machine, you can run the API using Docker:
 
-    docker compose up
+1.  Copy the `env_sample` file into `.env` and modify its values:
 
-The API will be running and accepting requests on port 8000.
+        REDIS_HOST=redis
+        REDIS_PORT=6379
+
+1.  Run the app:
+
+        docker compose up
+
+    The API will be running and accepting requests on port 8000.
 
 
 ## Documentation
