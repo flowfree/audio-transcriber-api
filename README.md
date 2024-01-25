@@ -33,12 +33,14 @@ Once the API is up and running, you can transcribe your audio files e.g:
 import time
 import requests 
 
-API_URL = 'http://localhost:8000
+API_URL = 'http://localhost:8000'
 
+# Upload audio file
 with open('/path/to/audio.wav', 'rb') as f:
     r = requests.post(f'{API_URL}/transcribe', files={'audio': f})
     r.raise_for_status()
 
+# Check the status and retrieve the transcriptin
 task_id = r.json()['taskId']
 while True:
     r = requests.get(f'{API_URL}/transcribe/{task_id}')
