@@ -64,5 +64,9 @@ If you have Docker installed on your machine, you can run the API using a single
 The API will be running and accepting requests on port 8000.
 
 
+## Documentation
+FastAPI automatically generate the documentation for the API, you can access the docs at `http://localhost:8000/docs`.
+
+
 ## License
 MIT
